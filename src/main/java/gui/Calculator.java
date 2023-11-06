@@ -122,55 +122,63 @@ public class Calculator extends VBox implements EventHandler<ActionEvent> {
 		this.getChildren().addAll(sp, gd);
 	}
 
-	String expresion = "";
-
 	@Override
 	public void handle(ActionEvent event) {
 
 		Button b = (Button) event.getSource();
 		String value = b.getText();
 
-		if ("1234567890".contains(value)) {
-			displayText.setText(value);
-		} else if ("/*-+".contains(value)) {
+		if ("/*-+".contains(value)) {
 			operator = value;
 			number1 = displayText.getText();
-			displayText.setText(value);
-		} else if (value == "=") {
+			displayText.setText("");
+		}
+		if ("/*-+".contains(displayText.getText())) {
+			displayText.setText("");
+		}
+		if (value == "=") {
 			number2 = displayText.getText();
-			displayText.setText(calcular(number1, number2, operator).toString());
+			displayText.setText("");
+			calculos();
 		} else if (value == "C") {
 			operator = null;
 			number1 = "";
 			number2 = "";
 			displayText.setText("");
+		} else {
+			displayText.setText(displayText.getText() + value);
 		}
 	}
 
-	public Float calcular(String number1, String number2, String op) {
-		Float num1 = Float.parseFloat(number1);
-		Float num2 = Float.parseFloat(number2);
-		Float resultado = 0f;
+	// operaciones de calculadora
+	public void calculos() {
+		int numero1 = Integer.parseInt(number1);
+		int numero2 = Integer.parseInt(number2);
+		int resultFinal;
 
-		switch (op) {
-			case "+":
-				resultado = num1 + num2;
-				break;
+		// SUMAR
 
-			case "-":
-				resultado = num1 - num2;
-				break;
-
-			case "*":
-				resultado = num1 * num2;
-				break;
-
-			case "/":
-				resultado = num1 / num2;
-				break;
+		if (operator == "+") {
+			resultFinal = numero1 + numero2;
+			displayText.setText(Integer.toString(resultFinal));
 		}
 
-		return resultado;
+		// RESTAR
+		else if (operator == "-") {
+			resultFinal = numero1 - numero2;
+			displayText.setText(Integer.toString(resultFinal));
+		}
 
+		// MULTIPLICAR
+		else if (operator == "*") {
+			resultFinal = numero1 * numero2;
+			displayText.setText(Integer.toString(resultFinal));
+		}
+
+		// DIVIDIR
+		else if (operator == "/") {
+			resultFinal = numero1 / numero2;
+			displayText.setText(Integer.toString(resultFinal));
+		}
 	}
 }
